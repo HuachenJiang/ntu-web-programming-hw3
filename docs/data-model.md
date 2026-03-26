@@ -1,43 +1,114 @@
-# 数据模型
+# Data Model
 
-## 目录约定
+本文件定义当前阶段 mock 数据的来源、字段契约、允许值来源与同步更新规则。
 
-- 资料产物统一输出到 `src/public/data/`。
-- 当前阶段同时维护 `dogs.json` 与 `dogs.csv` 两份文件。
-- 两份文件必须保持记录数量、字段结构、记录顺序与语义一致。
+## 1. 资料来源与产物
 
-## 记录规模
+当前前端展示直接读取：
 
-- 品种数量：8
-- 每个品种：12 笔
-- 总记录数：96 笔
+- `src/public/data/dogs.json`
 
-## 字段契约
+同时维护一份便于人工检查的表格产物：
 
-| 字段 | 型别 | 说明 | 允许值 / 备注 |
-| --- | --- | --- | --- |
-| `id` | `string` | 唯一编号 | 由品种代码与流水号组成，例如 `bichon-01` |
-| `name` | `string` | 狗狗名字 | 简体中文文案 |
-| `breed` | `string` | 品种名称 | 必须属于既定 8 个品种 |
-| `ageYears` | `number` | 年龄（岁） | 允许小数，当前脚本产出 1.0 到 5.0 |
-| `gender` | `"male" \| "female"` | 性别 | 保留英文枚举，方便后续程式判断 |
-| `weightKg` | `number` | 体重（公斤） | 允许小数 |
-| `coatColor` | `string` | 毛色 | 简体中文文案 |
-| `personality` | `string` | 性格标签 | 简体中文文案 |
-| `vaccinated` | `boolean` | 是否已完成疫苗 | 布林值 |
-| `neutered` | `boolean` | 是否已绝育 | 布林值 |
-| `city` | `string` | 当前所在城市 | 简体中文文案 |
-| `description` | `string` | 简短介绍 | 简体中文文案 |
-| `adoptionStatus` | `"available"` | 领养状态 | 当前阶段固定为 `available` |
+- `src/public/data/dogs.csv`
 
-## 允许值
+两份档案必须保持：
 
-- 品种仅允许：`比熊`、`边牧`、`泰迪`、`柯基`、`柴犬`、`米克斯`、`黄金猎犬`、`拉布拉多`。
-- `adoptionStatus` 当前阶段仅允许 `available`。
-- 展示型文字字段统一使用简体中文；枚举判断字段维持英文值。
+- 相同记录数量
+- 相同字段结构
+- 相同记录顺序
+- 相同语义内容
 
-## 同步更新点
+## 2. 生成与验证脚本
 
-- 字段、允许值或记录规模变更时，必须先更新本文。
-- 更新本文后，再同步 `README.md` 摘要、`src/types/dog.ts` 与相关脚本。
-- 若变更影响阶段范围，也要同步更新 `docs/spec.md`。
+- `scripts/generate-dog-data.mjs`
+  - 生成 `dogs.json` 与 `dogs.csv`
+- `scripts/verify-dog-data.mjs`
+  - 验证两份资料产物是否一致
+
+若脚本输入、输出路径或生成逻辑发生变化，必须先更新本文件与 `README.md`。
+
+## 3. 字段定义
+
+每条狗狗记录符合 `src/types/dog.ts` 中的 `DogRecord`：
+
+| 字段 | 型别 | 说明 |
+| --- | --- | --- |
+| `id` | `string` | 唯一编号 |
+| `name` | `string` | 狗狗名字 |
+| `breed` | `BreedKey` | 品种，必须属于 `BREEDS` |
+| `ageYears` | `number` | 年龄（岁） |
+| `gender` | `"male" \| "female"` | 性别 |
+| `weightKg` | `number` | 体重（公斤） |
+| `coatColor` | `string` | 毛色 |
+| `personality` | `string` | 性格标签 |
+| `vaccinated` | `boolean` | 是否已完成疫苗 |
+| `neutered` | `boolean` | 是否已绝育 |
+| `city` | `string` | 当前所在城市 |
+| `description` | `string` | 简短介绍 |
+| `adoptionStatus` | `"available"` | 当前阶段固定值 |
+
+## 4. 允许值来源
+
+以下字段的允许值来源必须固定：
+
+| 字段 | 允许值来源 |
+| --- | --- |
+| `breed` | `src/types/dog.ts` 中的 `BREEDS` |
+| `gender` | `src/types/dog.ts` 中的字面值联合型别 |
+| `adoptionStatus` | `src/types/dog.ts` 中的 `AdoptionStatus` |
+| 品种视觉/说明延伸资料 | `src/data/breedMeta.ts` |
+
+展示型文本约定：
+
+- `breed` 使用既定中文品种值
+- `gender` 与 `adoptionStatus` 保留英文枚举值，方便程式判断
+- 展示型文本字段统一使用简体中文
+- 当前城市资料来自固定城市列表，不做用户输入
+
+## 5. 当前资料规模
+
+- 8 个品种
+- 每个品种 12 只狗
+- 共 96 条记录
+
+当前品种清单：
+
+- 比熊
+- 边牧
+- 泰迪
+- 柯基
+- 柴犬
+- 米克斯
+- 黄金猎犬
+- 拉布拉多
+
+## 6. 同步更新点
+
+当以下内容变化时，必须先更新本文件，再修改代码：
+
+| 变化内容 | 还需要同步更新 |
+| --- | --- |
+| 字段新增、删除、改名 | `README.md`、相关类型定义、生成脚本 |
+| 字段型别变化 | `README.md`、相关类型定义、消费该字段的组件/工具 |
+| 品种枚举变化 | `README.md`、`src/types/dog.ts`、`src/data/breedMeta.ts` |
+| 资料目录变化 | `README.md`、脚本路径说明 |
+| 脚本输入输出变化 | `README.md`、`docs/development.md` |
+| 记录规模变化 | `README.md`、生成脚本说明 |
+
+## 7. 当前阶段限制
+
+当前 `adoptionStatus` 固定为 `available`，不扩充为复杂状态机。若未来要加入更多状态，例如：
+
+- 已送养
+- 待审核
+- 暂停开放
+
+必须先在本文件写清楚：
+
+- 状态定义
+- 来源
+- 展示规则
+- 需要同步更新的类型与组件
+
+然后才能进入实现。
