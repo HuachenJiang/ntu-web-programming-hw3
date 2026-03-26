@@ -10,62 +10,62 @@ const breeds = [
   {
     key: "比熊",
     code: "bichon",
-    names: ["棉花糖", "白玉", "雪球", "奶酪", "麻糬", "豆花", "糖糖", "米露", "沐沐", "小圓", "泡芙", "露比"],
+    names: ["棉花糖", "白玉", "雪球", "奶酪", "麻糬", "豆花", "糖糖", "米露", "沐沐", "小圆", "泡芙", "露比"],
     colors: ["奶白", "雪白", "米白"],
-    personalities: ["親人黏人", "安靜溫柔", "愛撒嬌", "喜歡陪伴"],
+    personalities: ["亲人黏人", "安静温柔", "爱撒娇", "喜欢陪伴"],
   },
   {
     key: "边牧",
     code: "border-collie",
-    names: ["阿諾", "閃電", "小黑", "星塵", "球球", "海鹽", "初一", "七七", "麥芽", "豆丁", "凱西", "布魯"],
+    names: ["阿诺", "闪电", "小黑", "星尘", "球球", "海盐", "初一", "七七", "麦芽", "豆丁", "凯西", "布鲁"],
     colors: ["黑白", "咖白", "三色"],
-    personalities: ["聰明機警", "精力旺盛", "喜歡訓練", "互動感強"],
+    personalities: ["聪明机警", "精力旺盛", "喜欢训练", "互动感强"],
   },
   {
     key: "泰迪",
     code: "poodle",
-    names: ["可可", "奶茶", "栗子", "可頌", "布丁", "毛豆", "小卷", "芋泥", "暖暖", "可樂", "QQ", "艾比"],
+    names: ["可可", "奶茶", "栗子", "可颂", "布丁", "毛豆", "小卷", "芋泥", "暖暖", "可乐", "QQ", "艾比"],
     colors: ["棕色", "深咖", "杏色"],
-    personalities: ["活潑外向", "容易親近", "好奇心強", "反應靈敏"],
+    personalities: ["活泼外向", "容易亲近", "好奇心强", "反应灵敏"],
   },
   {
     key: "柯基",
     code: "corgi",
-    names: ["短腿", "阿餅", "多比", "咪嚕", "旺財", "小麥", "糯米", "肉鬆", "柚子", "福寶", "卡布", "拿鐵"],
-    colors: ["黃白", "赤白", "三色"],
-    personalities: ["友善開朗", "愛玩玩具", "表情豐富", "喜歡散步"],
+    names: ["短腿", "阿饼", "多比", "咪噜", "旺财", "小麦", "糯米", "肉松", "柚子", "福宝", "卡布", "拿铁"],
+    colors: ["黄白", "赤白", "三色"],
+    personalities: ["友善开朗", "爱玩玩具", "表情丰富", "喜欢散步"],
   },
   {
     key: "柴犬",
     code: "shiba",
-    names: ["阿柴", "福丸", "橘子", "豆柴", "麻吉", "丸子", "太陽", "和果", "小暖", "千歲", "可米", "豆腐"],
+    names: ["阿柴", "福丸", "橘子", "豆柴", "麻吉", "丸子", "太阳", "和果", "小暖", "千岁", "可米", "豆腐"],
     colors: ["赤色", "黑柴", "胡麻"],
-    personalities: ["獨立穩定", "熟了很黏", "警覺性高", "有自己的節奏"],
+    personalities: ["独立稳定", "熟了很黏", "警觉性高", "有自己的节奏"],
   },
   {
     key: "米克斯",
     code: "mixed",
-    names: ["小虎", "阿勇", "妞妞", "小吉", "斑比", "勇者", "阿棕", "橘福", "小葉", "阿布", "小滿", "平安"],
-    colors: ["虎斑", "黑褐", "米黃", "白底花"],
-    personalities: ["適應力強", "忠誠可靠", "慢熟貼心", "穩重懂事"],
+    names: ["小虎", "阿勇", "妞妞", "小吉", "斑比", "勇者", "阿棕", "橘福", "小叶", "阿布", "小满", "平安"],
+    colors: ["虎斑", "黑褐", "米黄", "白底花"],
+    personalities: ["适应力强", "忠诚可靠", "慢熟贴心", "稳重懂事"],
   },
   {
     key: "黄金猎犬",
     code: "golden-retriever",
-    names: ["阿金", "陽光", "小麥", "哈尼", "森森", "巴迪", "球寶", "果醬", "點點", "歐文", "皮皮", "晴天"],
-    colors: ["淺金", "金色", "奶油金"],
-    personalities: ["溫和親切", "喜歡陪小孩", "愛互動", "穩定好相處"],
+    names: ["阿金", "阳光", "小麦", "哈尼", "森森", "巴迪", "球宝", "果酱", "点点", "欧文", "皮皮", "晴天"],
+    colors: ["浅金", "金色", "奶油金"],
+    personalities: ["温和亲切", "喜欢陪小孩", "爱互动", "稳定好相处"],
   },
   {
     key: "拉布拉多",
     code: "labrador",
-    names: ["阿拉", "黑糖", "奶油", "卡卡", "拿拿", "泡泡", "勇寶", "阿肥", "布朗", "皮蛋", "星星", "芒果"],
-    colors: ["米黃", "黑色", "巧克力"],
-    personalities: ["外向可靠", "愛玩水", "服從性高", "喜歡陪伴"],
+    names: ["阿拉", "黑糖", "奶油", "卡卡", "拿拿", "泡泡", "勇宝", "阿肥", "布朗", "皮蛋", "星星", "芒果"],
+    colors: ["米黄", "黑色", "巧克力"],
+    personalities: ["外向可靠", "爱玩水", "服从性高", "喜欢陪伴"],
   },
 ];
 
-const cities = ["台北", "新北", "桃園", "台中", "台南", "高雄", "新竹", "基隆"];
+const cities = ["台北", "新北", "桃园", "台中", "台南", "高雄", "新竹", "基隆"];
 
 const csvColumns = [
   "id",
@@ -92,18 +92,20 @@ const dogs = breeds.flatMap((breed, breedIndex) =>
     const ageYears = Number((1 + ((breedIndex + dogIndex) % 9) * 0.5).toFixed(1));
     const gender = dogIndex % 2 === 0 ? "male" : "female";
     const weightKg = Number((4.5 + breedIndex * 1.8 + (dogIndex % 4) * 1.3).toFixed(1));
+    const dogName = name;
+    const breedName = breed.key;
     const coatColor = breed.colors[dogIndex % breed.colors.length];
     const personality = breed.personalities[dogIndex % breed.personalities.length];
     const vaccinated = dogIndex % 5 !== 0;
     const neutered = dogIndex % 3 !== 0;
     const city = cities[(breedIndex + dogIndex) % cities.length];
     const id = `${breed.code}-${String(dogIndex + 1).padStart(2, "0")}`;
-    const description = `${name}是一隻${personality}的${breed.key}，目前在${city}等待新的家庭，已完成基礎救援安置。`;
+    const description = `${dogName}是一只${personality}的${breedName}，目前在${city}等待新的家庭，已完成基础救援安置。`;
 
     return {
       id,
-      name,
-      breed: breed.key,
+      name: dogName,
+      breed: breedName,
       ageYears,
       gender,
       weightKg,
@@ -128,4 +130,3 @@ await writeFile(path.join(outputDir, "dogs.json"), `${JSON.stringify(dogs, null,
 await writeFile(path.join(outputDir, "dogs.csv"), `${csvContent}\n`, "utf8");
 
 console.log(`Generated ${dogs.length} dog records into ${outputDir}`);
-
