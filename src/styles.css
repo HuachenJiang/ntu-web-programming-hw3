@@ -28,6 +28,7 @@ body {
 }
 
 .hero-panel {
+  /* 首屏先维持轻量的占位卡片，后续正式 UI 阶段再替换成组件化布局。 */
   width: min(760px, 100%);
   padding: 48px;
   border-radius: 28px;
@@ -87,6 +88,7 @@ body {
 }
 
 @media (max-width: 720px) {
+  /* 目前只确保移动端可阅读，避免在第一阶段过早投入完整响应式设计。 */
   .app-shell {
     padding: 20px;
   }
@@ -99,4 +101,3 @@ body {
     grid-template-columns: 1fr;
   }
 }
-

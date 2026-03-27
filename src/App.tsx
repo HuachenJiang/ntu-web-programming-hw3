@@ -1,6 +1,7 @@
 function App() {
   return (
     <main className="app-shell">
+      {/* 这个首页目前只承担阶段占位说明，避免在资料契约确认前提前展开 UI 开发。 */}
       <section className="hero-panel">
         <p className="eyebrow">Phase 1</p>
         <h1>流浪狗狗领养服务</h1>
@@ -28,4 +29,3 @@ function App() {
 }
 
 export default App;
-

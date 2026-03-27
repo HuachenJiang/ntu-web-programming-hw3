@@ -4,8 +4,10 @@ import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+// 资料产物固定输出到公开静态目录，供后续前端直接读取。
 const outputDir = path.resolve(__dirname, "../src/public/data");
 
+// 这份设定是当前阶段 mock 资料的主要来源，调整内容时要同步 docs/data-model.md 与 src/types/dog.ts。
 const breeds = [
   {
     key: "比熊",
@@ -65,8 +67,10 @@ const breeds = [
   },
 ];
 
+// 轮替城市只为了让样本更接近真实列表分布，不代表未来真实资料来源格式。
 const cities = ["台北", "新北", "桃园", "台中", "台南", "高雄", "新竹", "基隆"];
 
+// CSV 欄位顺序必须与 JSON 结构保持同一份契约，方便后续比对与匯入。
 const csvColumns = [
   "id",
   "name",
@@ -84,11 +88,13 @@ const csvColumns = [
 ];
 
 function quoteCsv(value) {
+  // 统一处理双引号转义，避免说明文字中的标点破坏 CSV 结构。
   return `"${String(value).replaceAll('"', '""')}"`;
 }
 
 const dogs = breeds.flatMap((breed, breedIndex) =>
   breed.names.map((name, dogIndex) => {
+    // 使用可预测的规则产生资料，目的是让 JSON / CSV 能稳定重建并保持易于 diff。
     const ageYears = Number((1 + ((breedIndex + dogIndex) % 9) * 0.5).toFixed(1));
     const gender = dogIndex % 2 === 0 ? "male" : "female";
     const weightKg = Number((4.5 + breedIndex * 1.8 + (dogIndex % 4) * 1.3).toFixed(1));

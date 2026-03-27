@@ -6,6 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const dataDir = path.resolve(__dirname, "../src/public/data");
 
+// 这些检查反映的是当前阶段已确认的资料契约，放宽前要先更新 docs/data-model.md。
 const expectedBreeds = new Set([
   "比熊",
   "边牧",
@@ -17,6 +18,7 @@ const expectedBreeds = new Set([
   "拉布拉多",
 ]);
 
+// JSON 与 CSV 都必须完整覆盖这些欄位，后续 UI 才能用同一份模型读取资料。
 const requiredFields = [
   "id",
   "name",
@@ -71,6 +73,7 @@ for (const dog of dogs) {
 }
 
 const csvLines = csvRaw.trim().split("\n");
+// 目前 CSV 只做列数对齐检查；若未来加入复杂内容，需要再扩充更细的欄位级验证。
 if (csvLines.length - 1 !== dogs.length) {
   throw new Error(`CSV row count mismatch: expected ${dogs.length}, received ${csvLines.length - 1}.`);
 }

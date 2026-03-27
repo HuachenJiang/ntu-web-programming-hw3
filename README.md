@@ -2,6 +2,8 @@
 
 这是一个使用 React + Vite + TypeScript 搭建的纯前端项目，目标是制作一个流浪狗狗收养服务页面。使用者未来可以在页面中浏览不同狗狗品种，并查看每只狗的详细资料，再进入领养流程。
 
+协作与专题文档入口统一整理在 `docs/guide.md`；开始改动前，请先确认 `docs/spec.md`、`docs/data-model.md` 与 `docs/code-maintenance.md`。
+
 ## 当前阶段
 
 当前阶段只完成两件事：
@@ -25,13 +27,18 @@
 - 可接受的方向包括 Material UI、Ant Design、Shadcn UI、Tailwind CSS 等同类方案。
 - 在当前数据结构确认前，本阶段不安装或开发具体 UI 组件，仅先记录该约束。
 
-## 启动与常用命令
+## 快速启动
 
 ```bash
 npm install
 npm run generate:data
 npm run verify:data
 npm run dev
+```
+
+## 常用命令
+
+```bash
 npm run build
 ```
 
@@ -82,3 +89,8 @@ npm run build
 - 每条记录会用于支撑后续的卡片展示、筛选与领养状态呈现。
 
 在进入页面开发前，如果字段、分类或数据风格要调整，请先更新本文档说明。
+
+## 维护说明
+
+- 代码改动前，先依 `docs/change-workflow.md` 更新相关文档。
+- 新增或修改代码时，需要补充适量的维护性注释，重点解释约束、资料来源、非直觉逻辑与跨档案同步点。
