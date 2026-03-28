@@ -6,7 +6,7 @@ import { useDogCatalog } from "../../context/DogCatalogContext";
 
 export function BreedInsightPanel() {
   const {
-    currentDogs,
+    currentDogCount,
     currentMeta,
     neuteredCount,
     selectedBreed,
@@ -45,19 +45,19 @@ export function BreedInsightPanel() {
           <Stack direction="row" spacing={1.5} alignItems="center">
             <PetsRoundedIcon sx={{ color: currentMeta.accent }} />
             <Typography>
-              当前品种共有 <strong>{currentDogs.length}</strong> 只狗狗资料可浏览
+              当前品种共有 <strong>{currentDogCount}</strong> 只狗狗资料可浏览
             </Typography>
           </Stack>
           <Stack direction="row" spacing={1.5} alignItems="center">
             <VaccinesRoundedIcon sx={{ color: currentMeta.accent }} />
             <Typography>
-              全站已有 <strong>{vaccinatedCount}</strong> 只完成疫苗纪录
+              当前品种已有 <strong>{vaccinatedCount}</strong> 只完成疫苗纪录
             </Typography>
           </Stack>
           <Stack direction="row" spacing={1.5} alignItems="center">
             <MonitorHeartOutlinedIcon sx={{ color: currentMeta.accent }} />
             <Typography>
-              已绝育纪录共 <strong>{neuteredCount}</strong> 只，利于后续领养说明扩充
+              当前品种已绝育纪录共 <strong>{neuteredCount}</strong> 只，利于后续领养说明扩充
             </Typography>
           </Stack>
         </Stack>

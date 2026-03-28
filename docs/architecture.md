@@ -52,10 +52,6 @@
 
 ### State Layer
 
-- `src/hooks/useDogCatalogData.ts`
-  - 是当前首页展示数据的唯一派生入口
-  - 负责读取 `src/public/data/dogs.json`
-  - 负责计算当前品种资料与全域统计
 - `src/context/DogCatalogContext.tsx`
   - 是首页页面级共享状态的唯一入口
   - 负责暴露 `selectedBreed` 与已派生好的展示资料
@@ -66,6 +62,10 @@
   - 定义数据契约与品种枚举
 - `src/data/breedMeta.ts`
   - 定义品种视觉配置与说明文案
+- `src/utils/getDogCatalogData.ts`
+  - 是当前首页展示数据的唯一派生入口
+  - 负责读取 `src/public/data/dogs.json`
+  - 负责计算当前品种资料、当前品种辅助统计与首页全站摘要统计
 - `src/utils/dogFormat.ts`
   - 定义可复用的格式化逻辑
 
@@ -85,7 +85,7 @@
 当前首页的数据流必须维持以下顺序：
 
 1. `dogs.json` 作为静态输入
-2. `useDogCatalogData(selectedBreed)` 负责派生
+2. `getDogCatalogData(selectedBreed)` 负责派生
 3. `DogCatalogProvider` 统一透出页面所需资料
 4. 首页组件通过 `useDogCatalog()` 消费
 
@@ -93,14 +93,14 @@
 
 - `dogs.json` 是当前首页展示数据唯一来源
 - `selectedBreed` 是当前唯一页面级浏览状态
-- 统计值必须在 hook 层派生，不在组件内重复计算
+- 统计值必须在纯函数派生层完成，不在组件内重复计算
 - 展示组件不得各自复制筛选逻辑
 
 ## 5. 组件职责与非职责
 
 ### 允许做派生计算的层
 
-- `hooks`
+- `utils` 中的纯函数
 - 少量纯格式化工具函数
 
 ### 允许维护页面级共享状态的层
@@ -126,8 +126,8 @@
 | 目录 | 责任 | 不负责 |
 | --- | --- | --- |
 | `src/components/` | 展示与组合 | 数据源读取、复杂派生 |
-| `src/hooks/` | 数据读取、筛选、派生统计 | 长篇 UI 结构 |
 | `src/context/` | 共享页面状态与聚合资料暴露 | 原始数据定义 |
+| `src/utils/` | 纯函数派生与格式化工具 | 页面级状态维护 |
 | `src/data/` | 静态配置与文案 | 运行时状态 |
 | `src/public/data/` | mock 数据产物 | 展示逻辑 |
 

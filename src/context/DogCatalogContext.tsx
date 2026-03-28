@@ -6,27 +6,27 @@ import {
   type ReactNode,
   type SetStateAction,
 } from "react";
-import { useDogCatalogData } from "../hooks/useDogCatalogData";
+import { getDogCatalogData } from "../utils/getDogCatalogData";
 import { BREEDS, type BreedKey } from "../types/dog";
 
 interface DogCatalogContextValue {
   selectedBreed: BreedKey;
   setSelectedBreed: Dispatch<SetStateAction<BreedKey>>;
   breeds: readonly BreedKey[];
-  totalDogs: number;
+  currentDogCount: number;
   cityCount: number;
   vaccinatedCount: number;
   neuteredCount: number;
   averageAge: string;
-  currentDogs: ReturnType<typeof useDogCatalogData>["currentDogs"];
-  currentMeta: ReturnType<typeof useDogCatalogData>["currentMeta"];
+  currentDogs: ReturnType<typeof getDogCatalogData>["currentDogs"];
+  currentMeta: ReturnType<typeof getDogCatalogData>["currentMeta"];
 }
 
 const DogCatalogContext = createContext<DogCatalogContextValue | null>(null);
 
 export function DogCatalogProvider({ children }: { children: ReactNode }) {
   const [selectedBreed, setSelectedBreed] = useState<BreedKey>(BREEDS[0]);
-  const catalogData = useDogCatalogData(selectedBreed);
+  const catalogData = getDogCatalogData(selectedBreed);
 
   return (
     <DogCatalogContext.Provider

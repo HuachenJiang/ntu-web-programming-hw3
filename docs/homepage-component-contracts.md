@@ -50,7 +50,7 @@
 ### `BreedInsightPanel`
 
 - 组件目的：展示当前选中品种的情绪描述、摘要与辅助统计。
-- 直接依赖的数据：`selectedBreed`、`currentMeta`、`currentDogs`、`vaccinatedCount`、`neuteredCount`
+- 直接依赖的数据：`selectedBreed`、`currentMeta`、`currentDogCount`、`vaccinatedCount`、`neuteredCount`
 - 是否依赖 context：是。
 - 是否允许持有本地状态：不允许。
 - 输出的 UI 责任：帮助使用者在进入卡片区前先理解当前品种的整体气质与资料规模。
