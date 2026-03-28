@@ -23,14 +23,23 @@ export function DogCard({ dog }: { dog: DogRecord }) {
       elevation={0}
       sx={{
         height: "100%",
-        borderRadius: 7,
+        // `sx` 的数字圆角会乘上 theme.shape.borderRadius；这里改成显式像素，
+        // 避免当前主题的大圆角基数把头像与文案挤进裁切区。
+        borderRadius: { xs: "32px", md: "36px" },
         border: `1px solid ${alpha(currentMeta.accent, 0.14)}`,
         background:
           "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(253,249,244,0.96) 100%)",
         boxShadow: "0 24px 60px rgba(73, 53, 28, 0.08)",
       }}
     >
-      <CardContent sx={{ p: 3 }}>
+      <CardContent
+        sx={{
+          p: { xs: 3.25, sm: 4 },
+          "&:last-child": {
+            pb: { xs: 3.25, sm: 4 },
+          },
+        }}
+      >
         <Stack spacing={2.25}>
           <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
             <Stack direction="row" spacing={1.5} alignItems="center">
