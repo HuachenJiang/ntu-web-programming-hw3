@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { useDogCatalog } from "../../context/DogCatalogContext";
 import type { DogRecord } from "../../types/dog";
-import { formatGender, formatProcedure } from "../../utils/dogFormat";
 
 export function DogCard({ dog }: { dog: DogRecord }) {
   const { currentMeta } = useDogCatalog();
@@ -51,7 +50,7 @@ export function DogCard({ dog }: { dog: DogRecord }) {
                   {dog.name}
                 </Typography>
                 <Typography sx={{ color: "text.secondary", fontSize: "0.95rem" }}>
-                  {dog.breed} / {formatGender(dog.gender)}
+                  {dog.breed} / {dog.gender}
                 </Typography>
               </Box>
             </Stack>
@@ -88,15 +87,11 @@ export function DogCard({ dog }: { dog: DogRecord }) {
             </Stack>
             <Stack direction="row" spacing={1.2} alignItems="center">
               <VaccinesRoundedIcon sx={{ fontSize: 19, color: currentMeta.accent }} />
-              <Typography sx={{ fontSize: "0.95rem" }}>
-                {formatProcedure(dog.vaccinated, "已完成疫苗纪录", "待补疫苗纪录")}
-              </Typography>
+              <Typography sx={{ fontSize: "0.95rem" }}>{dog.vaccinationStatus}</Typography>
             </Stack>
             <Stack direction="row" spacing={1.2} alignItems="center">
               <MonitorHeartOutlinedIcon sx={{ fontSize: 19, color: currentMeta.accent }} />
-              <Typography sx={{ fontSize: "0.95rem" }}>
-                {formatProcedure(dog.neutered, "已完成绝育", "绝育状态待更新")}
-              </Typography>
+              <Typography sx={{ fontSize: "0.95rem" }}>{dog.neuteredStatus}</Typography>
             </Stack>
           </Stack>
 

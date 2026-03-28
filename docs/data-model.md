@@ -30,7 +30,7 @@
 
 ## 3. 字段定义
 
-每条狗狗记录符合 `src/types/dog.ts` 中的 `DogRecord`：
+当前 `dogs.json` / `dogs.csv` 直接符合 `src/types/dog.ts` 中的 `DogRecord`；不再区分原始资料型别与展示型别，生成资料时就要写成 UI 可直接消费的结构。
 
 | 字段 | 型别 | 说明 |
 | --- | --- | --- |
@@ -38,12 +38,14 @@
 | `name` | `string` | 狗狗名字 |
 | `breed` | `BreedKey` | 品种，必须属于 `BREEDS` |
 | `ageYears` | `number` | 年龄（岁） |
-| `gender` | `"male" \| "female"` | 性别 |
+| `gender` | `"男生" \| "女生"` | 性别展示文案，在生成资料时就固定 |
 | `weightKg` | `number` | 体重（公斤） |
 | `coatColor` | `string` | 毛色 |
 | `personality` | `string` | 性格标签 |
-| `vaccinated` | `boolean` | 是否已完成疫苗 |
-| `neutered` | `boolean` | 是否已绝育 |
+| `vaccinated` | `boolean` | 是否已完成疫苗，保留给统计与后续扩充使用 |
+| `neutered` | `boolean` | 是否已绝育，保留给统计与后续扩充使用 |
+| `vaccinationStatus` | `"已完成疫苗纪录" \| "待补疫苗纪录"` | 疫苗展示文案，在生成资料时就固定 |
+| `neuteredStatus` | `"已完成绝育" \| "绝育状态待更新"` | 绝育展示文案，在生成资料时就固定 |
 | `city` | `string` | 当前所在城市 |
 | `description` | `string` | 简短介绍 |
 | `adoptionStatus` | `"available"` | 当前阶段固定值 |
@@ -55,14 +57,15 @@
 | 字段 | 允许值来源 |
 | --- | --- |
 | `breed` | `src/types/dog.ts` 中的 `BREEDS` |
-| `gender` | `src/types/dog.ts` 中的字面值联合型别 |
+| `gender` | `scripts/generate-dog-data.mjs` 中固定生成的中文展示文案 |
 | `adoptionStatus` | `src/types/dog.ts` 中的 `AdoptionStatus` |
 | 品种视觉/说明延伸资料 | `src/data/breedMeta.ts` |
+| `vaccinationStatus` / `neuteredStatus` | `scripts/generate-dog-data.mjs` 中固定生成的展示文案 |
 
 展示型文本约定：
 
 - `breed` 使用既定中文品种值
-- `gender` 与 `adoptionStatus` 保留英文枚举值，方便程式判断
+- `gender`、`vaccinationStatus`、`neuteredStatus` 固定为中文展示文案，组件不再重复判断
 - 展示型文本字段统一使用简体中文
 - 当前城市资料来自固定城市列表，不做用户输入
 
@@ -89,7 +92,7 @@
 
 | 变化内容 | 还需要同步更新 |
 | --- | --- |
-| 字段新增、删除、改名 | `README.md`、相关类型定义、生成脚本 |
+| `DogRecord` 字段新增、删除、改名 | `README.md`、相关类型定义、生成脚本、消费该字段的组件/工具 |
 | 字段型别变化 | `README.md`、相关类型定义、消费该字段的组件/工具 |
 | 品种枚举变化 | `README.md`、`src/types/dog.ts`、`src/data/breedMeta.ts` |
 | 资料目录变化 | `README.md`、脚本路径说明 |

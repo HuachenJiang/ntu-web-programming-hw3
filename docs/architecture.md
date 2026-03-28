@@ -65,15 +65,13 @@
 ### Static Config Layer
 
 - `src/types/dog.ts`
-  - 定义数据契约与品种枚举
+  - 定义首页直接消费的资料契约与品种枚举
 - `src/data/breedMeta.ts`
   - 定义品种视觉配置与说明文案
 - `src/utils/getDogCatalogData.ts`
   - 是当前首页展示数据的唯一派生入口
   - 负责读取 `src/public/data/dogs.json`
   - 负责计算当前品种资料、当前品种辅助统计与首页全站摘要统计
-- `src/utils/dogFormat.ts`
-  - 定义可复用的格式化逻辑
 
 ### UI Layer
 
@@ -91,7 +89,7 @@
 当前首页的数据流必须维持以下顺序：
 
 1. `dogs.json` 作为静态输入
-2. `getDogCatalogData(selectedBreed)` 负责派生
+2. `getDogCatalogData(selectedBreed)` 负责派生当前列表与统计
 3. `DogCatalogProvider` 统一透出页面所需资料
 4. 首页组件通过 `useDogCatalog()` 消费
 
@@ -100,6 +98,7 @@
 - `dogs.json` 是当前首页展示数据唯一来源
 - `selectedBreed` 是当前唯一页面级浏览状态
 - 统计值必须在纯函数派生层完成，不在组件内重复计算
+- 性别与健康状态文案应在生成资料时就固定，避免组件与 utils 再做二次转换
 - 展示组件不得各自复制筛选逻辑
 
 ## 5. 组件职责与非职责
