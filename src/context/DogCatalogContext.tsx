@@ -13,6 +13,7 @@ interface DogCatalogContextValue {
   selectedBreed: BreedKey;
   setSelectedBreed: Dispatch<SetStateAction<BreedKey>>;
   breeds: readonly BreedKey[];
+  totalDogs: number;
   currentDogCount: number;
   cityCount: number;
   vaccinatedCount: number;
