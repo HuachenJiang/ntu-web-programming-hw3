@@ -14,7 +14,7 @@ export function HomeCatalogSection() {
               variant="h3"
               sx={{ mt: 1, fontSize: { xs: "2rem", md: "2.5rem" } }}
             >
-              从品种分类进入，先看到每只狗狗真正的样子
+              按品种浏览，直接找到想认识的狗狗
             </Typography>
           </Box>
         </Box>
