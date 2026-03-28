@@ -1,8 +1,8 @@
 # 流浪狗狗领养服务
 
-这是一个使用 React + Vite + TypeScript 搭建的纯前端项目，目标是制作一个流浪狗狗收养服务页面。使用者未来可以在页面中浏览不同狗狗品种，并查看每只狗的详细资料，再进入领养流程。
+这是一个使用 React + Vite + TypeScript 搭建的纯前端项目，聚焦于流浪狗狗资料浏览首页的设计与实现。
 
-当前首页的第一屏摘要会先展示全站资料规模，当前品种的辅助统计则会随品种切换更新；更细的状态流与统计口径说明统一以 `docs/architecture.md` 与 `docs/homepage-component-contracts.md` 为准。
+当前首页会展示全站资料规模、品种切换结果与狗狗卡片资料；更细的状态流与统计口径说明统一以 `docs/architecture.md` 与 `docs/homepage-component-contracts.md` 为准。
 
 ## 文档入口
 

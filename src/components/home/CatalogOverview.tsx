@@ -33,7 +33,7 @@ export function CatalogOverview() {
           {selectedBreed}资料墙
         </Typography>
         <Typography sx={{ mt: 1.5, color: "text.secondary" }}>
-          {currentMeta.summary} 这一区块维持高可读性，让使用者先快速判断气质、城市分布与基础照护状态。
+          {currentMeta.summary}
         </Typography>
       </Paper>
 
@@ -65,9 +65,6 @@ export function CatalogOverview() {
             </Typography>
           </Box>
         </Stack>
-        <Typography sx={{ mt: 2, color: "text.secondary" }}>
-          页面暂不提供领养按钮与筛选表单，先把资料展示密度、版面层级与视觉语气稳定下来。
-        </Typography>
       </Paper>
     </Box>
   );

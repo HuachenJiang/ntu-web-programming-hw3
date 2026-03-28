@@ -57,7 +57,7 @@ export function BreedInsightPanel() {
           <Stack direction="row" spacing={1.5} alignItems="center">
             <MonitorHeartOutlinedIcon sx={{ color: currentMeta.accent }} />
             <Typography>
-              当前品种已绝育纪录共 <strong>{neuteredCount}</strong> 只，利于后续领养说明扩充
+              当前品种已绝育纪录共 <strong>{neuteredCount}</strong> 只
             </Typography>
           </Stack>
         </Stack>

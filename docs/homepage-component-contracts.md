@@ -24,6 +24,7 @@
 - 只有 hook / context 层负责资料选择与派生
 - 展示组件可以消费 context，但不能复制数据协议
 - 本阶段首页组件不承载领养动作流程
+- 首页上的说明文字只保留资料阅读必要信息，不展示项目阶段说明、未来规划或未实作功能提示
 
 ## 3. 组件契约
 
@@ -43,7 +44,7 @@
 - 直接依赖的数据：`totalDogs`、`cityCount`、`averageAge`
 - 是否依赖 context：是。
 - 是否允许持有本地状态：不允许。
-- 输出的 UI 责任：提供首页第一屏价值说明与全域摘要。
+- 输出的 UI 责任：提供首页第一屏标题与全域摘要，不额外承载项目说明段落。
 - 非责任范围：不负责当前品种切换、不负责卡片列表、不负责领养动作。
 - 修改时必须同步检查的文档：`docs/architecture.md`、`docs/homepage-component-contracts.md`
 
@@ -83,7 +84,7 @@
 - 直接依赖的数据：`selectedBreed`、`currentDogs`、`currentMeta`
 - 是否依赖 context：是。
 - 是否允许持有本地状态：不允许。
-- 输出的 UI 责任：补充当前品种说明与当前显示数量。
+- 输出的 UI 责任：补充当前品种说明与当前显示数量，不展示未开放功能的占位说明。
 - 非责任范围：不负责品种切换、不负责单卡片格式化、不负责新增交互流程。
 - 修改时必须同步检查的文档：`docs/architecture.md`、`docs/homepage-component-contracts.md`
 

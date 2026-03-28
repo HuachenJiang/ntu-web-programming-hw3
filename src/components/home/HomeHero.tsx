@@ -29,18 +29,6 @@ export function HomeHero() {
             <br />
             一页更温柔的相遇。
           </Typography>
-          <Typography
-            variant="body1"
-            sx={{
-              mt: 2.5,
-              maxWidth: 720,
-              fontSize: { xs: "1rem", md: "1.12rem" },
-              color: "text.secondary",
-            }}
-          >
-            这版首页先聚焦于救援犬资料展示：上方以品种切换浏览，下方用卡片呈现每只狗狗的个性、基础健康状态与所在城市，
-            让后续领养流程有一个稳定、清楚、可延伸的视觉基础。
-          </Typography>
         </Box>
 
         <Box className="hero-highlights">
