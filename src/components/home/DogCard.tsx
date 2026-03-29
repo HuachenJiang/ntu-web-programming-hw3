@@ -14,11 +14,15 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useDogCatalog } from "../../context/DogCatalogContext";
 import type { DogRecord } from "../../types/dog";
 
-export function DogCard({ dog }: { dog: DogRecord }) {
-  const { addDogToPendingAdoption, currentMeta } = useDogCatalog();
+interface DogCardProps {
+  dog: DogRecord;
+  accent: string;
+  onAdopt: (dogId: string) => void;
+}
+
+export function DogCard({ dog, accent, onAdopt }: DogCardProps) {
   const isAvailable = dog.adoptionStatus === "available";
   const isLocked = dog.adoptionStatus === "locked";
   const statusLabel = isAvailable
@@ -26,11 +30,7 @@ export function DogCard({ dog }: { dog: DogRecord }) {
     : isLocked
       ? "暂被锁定"
       : "已有主人领养";
-  const statusColor = isAvailable
-    ? currentMeta.accent
-    : isLocked
-      ? "#b26a25"
-      : "#5f6e63";
+  const statusColor = isAvailable ? accent : isLocked ? "#b26a25" : "#5f6e63";
   const buttonLabel = isAvailable
     ? "做TA的主人"
     : isLocked
@@ -67,8 +67,8 @@ export function DogCard({ dog }: { dog: DogRecord }) {
                 sx={{
                   width: 52,
                   height: 52,
-                  bgcolor: alpha(currentMeta.accent, 0.14),
-                  color: currentMeta.accent,
+                  bgcolor: alpha(accent, 0.14),
+                  color: accent,
                   fontWeight: 800,
                 }}
               >
@@ -96,11 +96,7 @@ export function DogCard({ dog }: { dog: DogRecord }) {
           </Stack>
 
           <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-            <Chip
-              label={dog.personality}
-              size="small"
-              sx={{ bgcolor: alpha(currentMeta.accent, 0.08) }}
-            />
+            <Chip label={dog.personality} size="small" sx={{ bgcolor: alpha(accent, 0.08) }} />
             <Chip label={`${dog.ageYears} 岁`} size="small" variant="outlined" />
             <Chip label={`${dog.weightKg} kg`} size="small" variant="outlined" />
           </Stack>
@@ -111,15 +107,15 @@ export function DogCard({ dog }: { dog: DogRecord }) {
 
           <Stack spacing={1.25}>
             <Stack direction="row" spacing={1.2} alignItems="center">
-              <FmdGoodOutlinedIcon sx={{ fontSize: 19, color: currentMeta.accent }} />
+              <FmdGoodOutlinedIcon sx={{ fontSize: 19, color: accent }} />
               <Typography sx={{ fontSize: "0.95rem" }}>{dog.city}</Typography>
             </Stack>
             <Stack direction="row" spacing={1.2} alignItems="center">
-              <VaccinesRoundedIcon sx={{ fontSize: 19, color: currentMeta.accent }} />
+              <VaccinesRoundedIcon sx={{ fontSize: 19, color: accent }} />
               <Typography sx={{ fontSize: "0.95rem" }}>{dog.vaccinationStatus}</Typography>
             </Stack>
             <Stack direction="row" spacing={1.2} alignItems="center">
-              <MonitorHeartOutlinedIcon sx={{ fontSize: 19, color: currentMeta.accent }} />
+              <MonitorHeartOutlinedIcon sx={{ fontSize: 19, color: accent }} />
               <Typography sx={{ fontSize: "0.95rem" }}>{dog.neuteredStatus}</Typography>
             </Stack>
           </Stack>
@@ -139,7 +135,7 @@ export function DogCard({ dog }: { dog: DogRecord }) {
               variant={isAvailable ? "contained" : "outlined"}
               startIcon={<VolunteerActivismRoundedIcon />}
               disabled={!isAvailable}
-              onClick={() => addDogToPendingAdoption(dog.id)}
+              onClick={() => onAdopt(dog.id)}
               sx={{
                 minWidth: { sm: 152 },
                 alignSelf: { xs: "stretch", sm: "center" },

@@ -4,7 +4,9 @@ import { BREED_META } from "../../data/breedMeta";
 import type { BreedKey } from "../../types/dog";
 
 export function BreedTabs() {
-  const { breeds, selectedBreed, setSelectedBreed } = useDogCatalog();
+  const {
+    catalog: { breeds, selectedBreed, setSelectedBreed },
+  } = useDogCatalog();
 
   return (
     <Tabs

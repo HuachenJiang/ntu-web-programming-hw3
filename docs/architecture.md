@@ -68,7 +68,20 @@
 
 - `src/context/DogCatalogContext.tsx`
   - 是首页页面级共享状态的唯一入口
-  - 负责暴露 `selectedBreed`、待认养清单、已认养结果、成功弹窗状态与已派生好的展示资料
+  - 负责组合 catalog hooks 与 adoption hooks 的结果，并以页面级协议统一对外暴露
+  - 不负责直接承载所有数据派生细节或叶子组件专用的展示值
+
+### Hook Layer
+
+- `src/hooks/useDogCatalogData.ts`
+  - 是首页静态资料派生的 hook 入口
+  - 负责封装 `dogs.json` 的读取结果、当前品种列表、统计值与 `currentMeta`
+- `src/hooks/useAdoptionFlow.ts`
+  - 是首页领养互动状态的 hook 入口
+  - 负责封装待认养、已认养、结算展开状态、成功弹窗状态与相关动作
+- `src/hooks/`
+  - 负责页面级领域逻辑的封装
+  - 不负责最终决定哪些值暴露给全页面；组合与裁剪由 context 完成
 
 ### Static Config Layer
 
@@ -77,9 +90,10 @@
 - `src/data/breedMeta.ts`
   - 定义品种视觉配置与说明文案
 - `src/utils/getDogCatalogData.ts`
-  - 是当前首页静态展示数据的唯一派生入口
+  - 是当前首页静态展示数据的纯函数派生入口
   - 负责读取 `src/public/data/dogs.json`
   - 负责计算当前品种资料、当前品种辅助统计与首页全站摘要统计
+  - 提供给 hook 层复用，不直接承担页面状态组合
   - 不负责写入或覆写互动产生的领养状态
 
 ### UI Layer
@@ -108,6 +122,12 @@
 3. `DogCatalogProvider` 结合前端 session 状态，统一覆写当前领养状态并透出页面所需资料
 4. 首页组件通过 `useDogCatalog()` 消费
 
+其中：
+
+- `useDogCatalogData(selectedBreed)` 负责静态资料派生
+- `useAdoptionFlow(allDogs)` 负责互动状态与领养动作
+- `DogCatalogProvider` 只负责把两者组合成页面共享协议
+
 固定规则：
 
 - `dogs.json` 是当前首页展示数据唯一来源
@@ -129,6 +149,7 @@
 ### 允许维护页面级共享状态的层
 
 - `context`
+- `hooks` 中以页面领域为单位封装的状态 hook
 
 ### 不允许直接引入 `dogs.json` 的层
 
@@ -140,6 +161,7 @@
 - 可以接收 props
 - 可以做轻量展示判断
 - 可以触发 context 提供的轻量领养动作
+- 叶子组件应优先通过 props 接收上层已整理好的值，避免直接依赖整包 context
 - 不应自行读取静态资料文件
 - 不应在组件内部创建新的页面级状态协议
 
@@ -150,8 +172,9 @@
 | 目录 | 责任 | 不负责 |
 | --- | --- | --- |
 | `src/components/` | 展示与组合 | 数据源读取、复杂派生 |
-| `src/context/` | 共享页面状态与聚合资料暴露 | 原始数据定义 |
-| `src/utils/` | 纯函数派生与格式化工具 | 页面级状态维护 |
+| `src/context/` | 页面级共享协议与 hook 结果组装 | 原始数据定义、叶子组件专用格式整理 |
+| `src/hooks/` | 页面领域逻辑、状态封装、派生组合 | 全局协议定义、底层静态配置 |
+| `src/utils/` | 纯函数派生与格式化工具 | 页面级状态维护、交互动作 |
 | `src/data/` | 静态配置与文案 | 运行时状态 |
 | `src/public/data/` | mock 数据产物 | 展示逻辑 |
 

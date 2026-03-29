@@ -2,7 +2,10 @@ import { alpha, Avatar, Box, Paper, Stack, Typography } from "@mui/material";
 import { useDogCatalog } from "../../context/DogCatalogContext";
 
 export function CatalogOverview() {
-  const { currentDogs, currentMeta, pendingAdoptionCount, selectedBreed } = useDogCatalog();
+  const {
+    catalog: { currentDogs, currentMeta, selectedBreed },
+    adoption: { pendingAdoptionCount },
+  } = useDogCatalog();
 
   return (
     <Box

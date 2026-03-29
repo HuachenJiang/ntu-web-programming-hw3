@@ -3,7 +3,9 @@ import { alpha, Box, Chip, Paper, Stack, Typography } from "@mui/material";
 import { useDogCatalog } from "../../context/DogCatalogContext";
 
 export function HomeHero() {
-  const { totalDogs, cityCount, averageAge } = useDogCatalog();
+  const {
+    catalog: { totalDogs, cityCount, averageAge },
+  } = useDogCatalog();
 
   return (
     <Paper className="hero-panel" elevation={0}>

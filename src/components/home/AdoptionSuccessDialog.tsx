@@ -13,8 +13,11 @@ import {
 import { useDogCatalog } from "../../context/DogCatalogContext";
 
 export function AdoptionSuccessDialog() {
-  const { closeSuccessDialog, currentMeta, isSuccessDialogOpen, lastConfirmedDogs } =
-    useDogCatalog();
+  const {
+    catalog: { currentMeta },
+    adoption: { isSuccessDialogOpen, lastConfirmedDogs },
+    actions: { closeSuccessDialog },
+  } = useDogCatalog();
   const confirmedNames = lastConfirmedDogs.map((dog) => dog.name);
 
   return (

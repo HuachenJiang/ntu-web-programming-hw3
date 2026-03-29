@@ -91,18 +91,18 @@
 ### `DogGrid`
 
 - 组件目的：以菜单式可滚动容器渲染当前品种下的卡片列表。
-- 直接依赖的数据：`currentDogs`
+- 直接依赖的数据：`currentDogs`、`currentMeta`、领养动作
 - 是否依赖 context：是。
 - 是否允许持有本地状态：不允许。
-- 输出的 UI 责任：控制当前列表迭代、卡片排列容器与区块内滚动体验。
+- 输出的 UI 责任：控制当前列表迭代、卡片排列容器与区块内滚动体验，并把单卡片需要的视觉与动作依赖透过 props 传下去。
 - 非责任范围：不负责读取原始数据、不负责卡片内容细节、不负责复杂分页或虚拟滚动策略。
 - 修改时必须同步检查的文档：`docs/architecture.md`、`docs/homepage-component-contracts.md`
 
 ### `DogCard`
 
 - 组件目的：展示单只狗狗的资料卡片。
-- 直接依赖的数据：展示就绪的 `dog` prop、`currentMeta`、领养动作
-- 是否依赖 context：是，读取当前品种视觉设定与领养动作；主体资料来自 prop。
+- 直接依赖的数据：展示就绪的 `dog` prop、`accent`、领养动作回调
+- 是否依赖 context：否；主体资料、视觉色与动作都由上层透过 props 提供。
 - 是否允许持有本地状态：不允许。
 - 输出的 UI 责任：展示名字、品种、性别、年龄、体重、性格、城市、健康状态、毛色与当前领养状态，并提供“做TA的主人”入口。
 - 非责任范围：不负责收藏、不负责弹窗详情、不负责资料筛选，也不负责把资料字段再转换成展示文案。
@@ -114,8 +114,18 @@
 - 直接依赖的数据：`pendingDogs`、`pendingAdoptionCount`、`isCheckoutExpanded`、结算动作与展开动作。
 - 是否依赖 context：是。
 - 是否允许持有本地状态：允许极少量表现型本地状态；待认养资料与结算状态仍以 context 为准。
-- 输出的 UI 责任：在页面底部显示待认养数量、展开清单、单只放弃领养与整单确认按钮。
+- 输出的 UI 责任：作为容器组件读取 context，在页面底部挂载摘要头、待认养列表/空态与底部确认区等展示子块。
 - 非责任范围：不负责读取原始数据、不负责改写静态资料源、不负责成功反馈展示细节。
+- 修改时必须同步检查的文档：`docs/architecture.md`、`docs/homepage-component-contracts.md`
+
+### `AdoptionCheckoutBar` 内部展示子块
+
+- 组件目的：承接 `AdoptionCheckoutBar` 拆出的摘要头、待认养列表/空态与底部确认区。
+- 直接依赖的数据：由 `AdoptionCheckoutBar` 透过 props 传入，不直接读取 context。
+- 是否依赖 context：否。
+- 是否允许持有本地状态：不允许。
+- 输出的 UI 责任：只负责各自区块的显示与触发回调。
+- 非责任范围：不负责定义新的页面级状态协议，不负责读取原始资料来源。
 - 修改时必须同步检查的文档：`docs/architecture.md`、`docs/homepage-component-contracts.md`
 
 ### `AdoptionSuccessDialog`

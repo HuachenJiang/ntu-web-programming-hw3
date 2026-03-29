@@ -6,11 +6,13 @@ import { useDogCatalog } from "../../context/DogCatalogContext";
 
 export function BreedInsightPanel() {
   const {
-    currentDogCount,
-    currentMeta,
-    neuteredCount,
-    selectedBreed,
-    vaccinatedCount,
+    catalog: {
+      currentDogCount,
+      currentMeta,
+      neuteredCount,
+      selectedBreed,
+      vaccinatedCount,
+    },
   } = useDogCatalog();
 
   return (

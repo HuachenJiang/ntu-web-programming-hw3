@@ -6,151 +6,80 @@ import {
   type ReactNode,
   type SetStateAction,
 } from "react";
-import { getDogCatalogData } from "../utils/getDogCatalogData";
-import {
-  BREEDS,
-  type AdoptionStatus,
-  type BreedKey,
-  type DogRecord,
-} from "../types/dog";
-
-function getResolvedAdoptionStatus(
-  dog: DogRecord,
-  pendingIds: Set<string>,
-  adoptedIds: Set<string>,
-): AdoptionStatus {
-  // 已认养必须覆盖待认养，避免确认后又被旧的 pending 状态盖回去。
-  if (adoptedIds.has(dog.id)) {
-    return "adopted";
-  }
-
-  if (pendingIds.has(dog.id)) {
-    return "locked";
-  }
-
-  return dog.adoptionStatus;
-}
+import { useAdoptionFlow } from "../hooks/useAdoptionFlow";
+import { useDogCatalogData } from "../hooks/useDogCatalogData";
+import { BREEDS, type BreedKey, type DogRecord } from "../types/dog";
+import type { BreedMeta } from "../data/breedMeta";
 
 interface DogCatalogContextValue {
-  selectedBreed: BreedKey;
-  setSelectedBreed: Dispatch<SetStateAction<BreedKey>>;
-  breeds: readonly BreedKey[];
-  totalDogs: number;
-  currentDogCount: number;
-  cityCount: number;
-  vaccinatedCount: number;
-  neuteredCount: number;
-  averageAge: string;
-  allDogs: DogRecord[];
-  currentDogs: ReturnType<typeof getDogCatalogData>["currentDogs"];
-  currentMeta: ReturnType<typeof getDogCatalogData>["currentMeta"];
-  pendingDogs: DogRecord[];
-  pendingAdoptionIds: string[];
-  pendingAdoptionCount: number;
-  adoptedCount: number;
-  isCheckoutExpanded: boolean;
-  setIsCheckoutExpanded: Dispatch<SetStateAction<boolean>>;
-  isSuccessDialogOpen: boolean;
-  lastConfirmedDogs: DogRecord[];
-  addDogToPendingAdoption: (dogId: string) => void;
-  removeDogFromPendingAdoption: (dogId: string) => void;
-  confirmPendingAdoptions: () => void;
-  closeSuccessDialog: () => void;
+  catalog: {
+    selectedBreed: BreedKey;
+    setSelectedBreed: Dispatch<SetStateAction<BreedKey>>;
+    breeds: readonly BreedKey[];
+    totalDogs: number;
+    currentDogCount: number;
+    cityCount: number;
+    vaccinatedCount: number;
+    neuteredCount: number;
+    averageAge: string;
+    currentDogs: DogRecord[];
+    currentMeta: BreedMeta;
+  };
+  adoption: {
+    pendingDogs: DogRecord[];
+    pendingAdoptionCount: number;
+    isCheckoutExpanded: boolean;
+    isSuccessDialogOpen: boolean;
+    lastConfirmedDogs: DogRecord[];
+  };
+  actions: {
+    addDogToPendingAdoption: (dogId: string) => void;
+    removeDogFromPendingAdoption: (dogId: string) => void;
+    confirmPendingAdoptions: () => void;
+    setIsCheckoutExpanded: Dispatch<SetStateAction<boolean>>;
+    closeSuccessDialog: () => void;
+  };
 }
 
 const DogCatalogContext = createContext<DogCatalogContextValue | null>(null);
 
 export function DogCatalogProvider({ children }: { children: ReactNode }) {
   const [selectedBreed, setSelectedBreed] = useState<BreedKey>(BREEDS[0]);
-  const [pendingAdoptionIds, setPendingAdoptionIds] = useState<string[]>([]);
-  const [adoptedDogIds, setAdoptedDogIds] = useState<string[]>([]);
-  const [isCheckoutExpanded, setIsCheckoutExpanded] = useState(false);
-  const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
-  const [lastConfirmedDogs, setLastConfirmedDogs] = useState<DogRecord[]>([]);
-  const catalogData = getDogCatalogData(selectedBreed);
-  const pendingIdsSet = new Set(pendingAdoptionIds);
-  const adoptedIdsSet = new Set(adoptedDogIds);
-  const allDogs = catalogData.allDogs.map((dog) => ({
-    ...dog,
-    adoptionStatus: getResolvedAdoptionStatus(dog, pendingIdsSet, adoptedIdsSet),
-  }));
-  const currentDogs = allDogs.filter((dog) => dog.breed === selectedBreed);
-  const pendingDogs = allDogs.filter((dog) => pendingIdsSet.has(dog.id));
-
-  function addDogToPendingAdoption(dogId: string) {
-    const targetDog = allDogs.find((dog) => dog.id === dogId);
-
-    if (!targetDog || targetDog.adoptionStatus !== "available") {
-      return;
-    }
-
-    setPendingAdoptionIds((prevIds) =>
-      prevIds.includes(dogId) ? prevIds : [...prevIds, dogId],
-    );
-    setIsCheckoutExpanded(true);
-  }
-
-  function removeDogFromPendingAdoption(dogId: string) {
-    setPendingAdoptionIds((prevIds) => {
-      const nextIds = prevIds.filter((id) => id !== dogId);
-
-      if (nextIds.length === 0) {
-        setIsCheckoutExpanded(false);
-      }
-
-      return nextIds;
-    });
-  }
-
-  function confirmPendingAdoptions() {
-    if (pendingAdoptionIds.length === 0) {
-      return;
-    }
-
-    const confirmedIds = pendingAdoptionIds;
-    const confirmedIdSet = new Set(confirmedIds);
-    const confirmedDogs = allDogs
-      .filter((dog) => confirmedIdSet.has(dog.id))
-      .map((dog) => ({ ...dog, adoptionStatus: "adopted" as const }));
-
-    setAdoptedDogIds((prevIds) => Array.from(new Set([...prevIds, ...confirmedIds])));
-    setPendingAdoptionIds([]);
-    setLastConfirmedDogs(confirmedDogs);
-    setIsCheckoutExpanded(false);
-    setIsSuccessDialogOpen(true);
-  }
-
-  function closeSuccessDialog() {
-    setIsSuccessDialogOpen(false);
-  }
+  const catalogData = useDogCatalogData(selectedBreed);
+  const adoptionFlow = useAdoptionFlow(catalogData.allDogs);
+  const currentDogs = adoptionFlow.resolvedDogs.filter((dog) => dog.breed === selectedBreed);
 
   return (
     <DogCatalogContext.Provider
       value={{
-        selectedBreed,
-        setSelectedBreed,
-        breeds: BREEDS,
-        totalDogs: catalogData.totalDogs,
-        currentDogCount: currentDogs.length,
-        cityCount: catalogData.cityCount,
-        vaccinatedCount: catalogData.vaccinatedCount,
-        neuteredCount: catalogData.neuteredCount,
-        averageAge: catalogData.averageAge,
-        allDogs,
-        currentDogs,
-        currentMeta: catalogData.currentMeta,
-        pendingDogs,
-        pendingAdoptionIds,
-        pendingAdoptionCount: pendingDogs.length,
-        adoptedCount: adoptedDogIds.length,
-        isCheckoutExpanded,
-        setIsCheckoutExpanded,
-        isSuccessDialogOpen,
-        lastConfirmedDogs,
-        addDogToPendingAdoption,
-        removeDogFromPendingAdoption,
-        confirmPendingAdoptions,
-        closeSuccessDialog,
+        // Provider 只保留页面共享协议，避免让叶子组件依赖未分组的大对象。
+        catalog: {
+          selectedBreed,
+          setSelectedBreed,
+          breeds: BREEDS,
+          totalDogs: catalogData.totalDogs,
+          currentDogCount: currentDogs.length,
+          cityCount: catalogData.cityCount,
+          vaccinatedCount: catalogData.vaccinatedCount,
+          neuteredCount: catalogData.neuteredCount,
+          averageAge: catalogData.averageAge,
+          currentDogs,
+          currentMeta: catalogData.currentMeta,
+        },
+        adoption: {
+          pendingDogs: adoptionFlow.pendingDogs,
+          pendingAdoptionCount: adoptionFlow.pendingAdoptionCount,
+          isCheckoutExpanded: adoptionFlow.isCheckoutExpanded,
+          isSuccessDialogOpen: adoptionFlow.isSuccessDialogOpen,
+          lastConfirmedDogs: adoptionFlow.lastConfirmedDogs,
+        },
+        actions: {
+          addDogToPendingAdoption: adoptionFlow.addDogToPendingAdoption,
+          removeDogFromPendingAdoption: adoptionFlow.removeDogFromPendingAdoption,
+          confirmPendingAdoptions: adoptionFlow.confirmPendingAdoptions,
+          setIsCheckoutExpanded: adoptionFlow.setIsCheckoutExpanded,
+          closeSuccessDialog: adoptionFlow.closeSuccessDialog,
+        },
       }}
     >
       {children}
