@@ -12,21 +12,27 @@ export const BREEDS = [
 
 export type BreedKey = (typeof BREEDS)[number];
 
-// 当前阶段只允许提供可领养中的占位状态，后续业务扩充时再放宽枚举。
-export type AdoptionStatus = "available";
+// 资料档中的初始值仍会是 `available`，其余状态由前端 session 在互动时覆写。
+export type AdoptionStatus = "available" | "locked" | "adopted";
 
-// 这个型别同时服务于静态资料与未来 UI 呈现，是前端读取 mock 数据的契约基线。
+export type DogGender = "男生" | "女生";
+export type VaccinationStatus = "已完成疫苗纪录" | "待补疫苗纪录";
+export type NeuteredStatus = "已完成绝育" | "绝育状态待更新";
+
+// 这个型别就是 dogs.json / dogs.csv 的单一资料契约，资料生成时就要满足 UI 展示需要。
 export interface DogRecord {
   id: string;
   name: string;
   breed: BreedKey;
   ageYears: number;
-  gender: "male" | "female";
+  gender: DogGender;
   weightKg: number;
   coatColor: string;
   personality: string;
   vaccinated: boolean;
   neutered: boolean;
+  vaccinationStatus: VaccinationStatus;
+  neuteredStatus: NeuteredStatus;
   city: string;
   description: string;
   adoptionStatus: AdoptionStatus;

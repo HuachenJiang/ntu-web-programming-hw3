@@ -82,6 +82,8 @@ const csvColumns = [
   "personality",
   "vaccinated",
   "neutered",
+  "vaccinationStatus",
+  "neuteredStatus",
   "city",
   "description",
   "adoptionStatus",
@@ -96,7 +98,7 @@ const dogs = breeds.flatMap((breed, breedIndex) =>
   breed.names.map((name, dogIndex) => {
     // 使用可预测的规则产生资料，目的是让 JSON / CSV 能稳定重建并保持易于 diff。
     const ageYears = Number((1 + ((breedIndex + dogIndex) % 9) * 0.5).toFixed(1));
-    const gender = dogIndex % 2 === 0 ? "male" : "female";
+    const gender = dogIndex % 2 === 0 ? "男生" : "女生";
     const weightKg = Number((4.5 + breedIndex * 1.8 + (dogIndex % 4) * 1.3).toFixed(1));
     const dogName = name;
     const breedName = breed.key;
@@ -104,6 +106,8 @@ const dogs = breeds.flatMap((breed, breedIndex) =>
     const personality = breed.personalities[dogIndex % breed.personalities.length];
     const vaccinated = dogIndex % 5 !== 0;
     const neutered = dogIndex % 3 !== 0;
+    const vaccinationStatus = vaccinated ? "已完成疫苗纪录" : "待补疫苗纪录";
+    const neuteredStatus = neutered ? "已完成绝育" : "绝育状态待更新";
     const city = cities[(breedIndex + dogIndex) % cities.length];
     const id = `${breed.code}-${String(dogIndex + 1).padStart(2, "0")}`;
     const description = `${dogName}是一只${personality}的${breedName}，目前在${city}等待新的家庭，已完成基础救援安置。`;
@@ -119,6 +123,8 @@ const dogs = breeds.flatMap((breed, breedIndex) =>
       personality,
       vaccinated,
       neutered,
+      vaccinationStatus,
+      neuteredStatus,
       city,
       description,
       adoptionStatus: "available",

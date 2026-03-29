@@ -30,10 +30,16 @@ const requiredFields = [
   "personality",
   "vaccinated",
   "neutered",
+  "vaccinationStatus",
+  "neuteredStatus",
   "city",
   "description",
   "adoptionStatus",
 ];
+
+const expectedGenders = new Set(["男生", "女生"]);
+const expectedVaccinationStatuses = new Set(["已完成疫苗纪录", "待补疫苗纪录"]);
+const expectedNeuteredStatuses = new Set(["已完成绝育", "绝育状态待更新"]);
 
 const jsonPath = path.join(dataDir, "dogs.json");
 const csvPath = path.join(dataDir, "dogs.csv");
@@ -65,6 +71,20 @@ for (const dog of dogs) {
 
   if (!expectedBreeds.has(dog.breed)) {
     throw new Error(`Unexpected breed found: ${dog.breed}`);
+  }
+
+  if (!expectedGenders.has(dog.gender)) {
+    throw new Error(`Unexpected gender in ${dog.id}: ${dog.gender}`);
+  }
+
+  if (!expectedVaccinationStatuses.has(dog.vaccinationStatus)) {
+    throw new Error(
+      `Unexpected vaccination status in ${dog.id}: ${dog.vaccinationStatus}`,
+    );
+  }
+
+  if (!expectedNeuteredStatuses.has(dog.neuteredStatus)) {
+    throw new Error(`Unexpected neutered status in ${dog.id}: ${dog.neuteredStatus}`);
   }
 
   if (dog.adoptionStatus !== "available") {
