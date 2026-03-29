@@ -115,6 +115,13 @@
 - `adoptedDogIds`
 - `isSuccessDialogOpen`
 
+当前首页还会从互动状态派生与维护：
+
+- `adoptedDogs`
+- `adoptedDogCount`
+- `remainingAdoptionSlots`
+- `isAdoptedDrawerOpen`
+
 当前首页的数据流必须维持以下顺序：
 
 1. `dogs.json` 作为静态输入
@@ -134,6 +141,8 @@
 - `selectedBreed` 仍是当前唯一页面级浏览状态
 - 待认养中的狗狗必须视为 `locked`
 - 已确认领养的狗狗必须视为 `adopted`
+- 单次可认领总数上限为 3，计算口径为 `已认领 + 待认养 <= 3`
+- 认领上限守卫必须在 `useAdoptionFlow` 中统一处理，展示组件只消费剩余名额与禁用状态
 - 前端互动状态只存在当前 session，不反写 `dogs.json`
 - 统计值必须在纯函数派生层完成，不在组件内重复计算
 - 性别与健康状态文案应在生成资料时就固定，避免组件与 utils 再做二次转换

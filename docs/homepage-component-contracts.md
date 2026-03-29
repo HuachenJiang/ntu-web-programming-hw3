@@ -64,7 +64,7 @@
 - 直接依赖的数据：无直接数据 props；由内部子组件消费 context。
 - 是否依赖 context：间接依赖。
 - 是否允许持有本地状态：不允许。
-- 输出的 UI 责任：组织分类浏览区块结构、文案层级与可滚动狗狗资料区，并以产品导向标题直接引导使用者开始浏览与挑选狗狗。
+- 输出的 UI 责任：组织分类浏览区块结构、文案层级与可滚动狗狗资料区，并以产品导向标题直接引导使用者开始浏览与挑选狗狗，同时在标题右侧挂载“已认领狗狗”入口与对应的右侧抽屉。
 - 非责任范围：不负责筛选计算、不负责渲染单卡片细节、不负责写入领养状态。
 - 修改时必须同步检查的文档：`docs/architecture.md`、`README.md`
 
@@ -111,10 +111,10 @@
 ### `AdoptionCheckoutBar`
 
 - 组件目的：作为首页底部吸附式待认养结算区，承接待认养摘要、展开清单与整单确认入口。
-- 直接依赖的数据：`pendingDogs`、`pendingAdoptionCount`、`isCheckoutExpanded`、结算动作与展开动作。
+- 直接依赖的数据：`pendingDogs`、`pendingAdoptionCount`、`adoptedDogs`、`adoptedDogCount`、`remainingAdoptionSlots`、`isCheckoutExpanded`、结算动作与展开动作。
 - 是否依赖 context：是。
 - 是否允许持有本地状态：允许极少量表现型本地状态；待认养资料与结算状态仍以 context 为准。
-- 输出的 UI 责任：作为容器组件读取 context，在页面底部挂载摘要头、待认养列表/空态与底部确认区等展示子块。
+- 输出的 UI 责任：作为容器组件读取 context，在页面底部挂载摘要头、待认养列表/空态、已认领摘要与底部确认区等展示子块，并明确显示本次剩余可认领名额。
 - 非责任范围：不负责读取原始数据、不负责改写静态资料源、不负责成功反馈展示细节。
 - 修改时必须同步检查的文档：`docs/architecture.md`、`docs/homepage-component-contracts.md`
 
@@ -126,6 +126,16 @@
 - 是否允许持有本地状态：不允许。
 - 输出的 UI 责任：只负责各自区块的显示与触发回调。
 - 非责任范围：不负责定义新的页面级状态协议，不负责读取原始资料来源。
+- 修改时必须同步检查的文档：`docs/architecture.md`、`docs/homepage-component-contracts.md`
+
+### `AdoptedDogsDrawer`
+
+- 组件目的：作为首页右侧抽屉，集中展示当前 session 内已认领的狗狗清单。
+- 直接依赖的数据：`adoptedDogs`、`adoptedDogCount`、`isAdoptedDrawerOpen`、关闭动作。
+- 是否依赖 context：是。
+- 是否允许持有本地状态：不允许。
+- 输出的 UI 责任：在不打断当前分类浏览上下文的前提下，从右侧抽屉展示本人已认领的狗狗资料摘要与状态标签。
+- 非责任范围：不负责修改已认领结果、不负责重新分配认领名额、不负责管理待认养清单。
 - 修改时必须同步检查的文档：`docs/architecture.md`、`docs/homepage-component-contracts.md`
 
 ### `AdoptionSuccessDialog`

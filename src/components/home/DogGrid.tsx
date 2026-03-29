@@ -5,6 +5,7 @@ import { DogCard } from "./DogCard";
 export function DogGrid() {
   const {
     catalog: { currentDogs, currentMeta },
+    adoption: { hasReachedAdoptionLimit },
     actions: { addDogToPendingAdoption },
   } = useDogCatalog();
 
@@ -16,6 +17,7 @@ export function DogGrid() {
             key={dog.id}
             dog={dog}
             accent={currentMeta.accent}
+            hasReachedAdoptionLimit={hasReachedAdoptionLimit}
             onAdopt={addDogToPendingAdoption}
           />
         ))}

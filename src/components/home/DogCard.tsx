@@ -19,20 +19,37 @@ import type { DogRecord } from "../../types/dog";
 interface DogCardProps {
   dog: DogRecord;
   accent: string;
+  hasReachedAdoptionLimit: boolean;
   onAdopt: (dogId: string) => void;
 }
 
-export function DogCard({ dog, accent, onAdopt }: DogCardProps) {
-  const isAvailable = dog.adoptionStatus === "available";
+export function DogCard({
+  dog,
+  accent,
+  hasReachedAdoptionLimit,
+  onAdopt,
+}: DogCardProps) {
+  const isLimitReached = dog.adoptionStatus === "available" && hasReachedAdoptionLimit;
+  const isAvailable = dog.adoptionStatus === "available" && !isLimitReached;
   const isLocked = dog.adoptionStatus === "locked";
   const statusLabel = isAvailable
     ? "开放认养"
+    : isLimitReached
+      ? "本次已满额"
     : isLocked
       ? "暂被锁定"
       : "已有主人领养";
-  const statusColor = isAvailable ? accent : isLocked ? "#b26a25" : "#5f6e63";
+  const statusColor = isAvailable
+    ? accent
+    : isLimitReached
+      ? "#8b5e34"
+      : isLocked
+        ? "#b26a25"
+        : "#5f6e63";
   const buttonLabel = isAvailable
     ? "做TA的主人"
+    : isLimitReached
+      ? "已达认领上限"
     : isLocked
       ? "待认养中"
       : "已完成认养";
@@ -129,7 +146,7 @@ export function DogCard({ dog, accent, onAdopt }: DogCardProps) {
             alignItems={{ xs: "stretch", sm: "center" }}
           >
             <Typography sx={{ fontSize: "0.92rem", color: "text.secondary" }}>
-              毛色：{dog.coatColor}
+              {isLimitReached ? "本次单页最多认领 3 只，刷新页面后会重新开始。" : `毛色：${dog.coatColor}`}
             </Typography>
             <Button
               variant={isAvailable ? "contained" : "outlined"}

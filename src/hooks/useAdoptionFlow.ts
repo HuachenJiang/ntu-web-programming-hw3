@@ -1,6 +1,8 @@
 import { useState } from "react";
 import type { AdoptionStatus, DogRecord } from "../types/dog";
 
+export const MAX_ADOPTION_PER_SESSION = 3;
+
 function getResolvedAdoptionStatus(
   dog: DogRecord,
   pendingIds: Set<string>,
@@ -22,6 +24,7 @@ export function useAdoptionFlow(allDogs: DogRecord[]) {
   const [pendingAdoptionIds, setPendingAdoptionIds] = useState<string[]>([]);
   const [adoptedDogIds, setAdoptedDogIds] = useState<string[]>([]);
   const [isCheckoutExpanded, setIsCheckoutExpanded] = useState(false);
+  const [isAdoptedDrawerOpen, setIsAdoptedDrawerOpen] = useState(false);
   const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
   const [lastConfirmedDogs, setLastConfirmedDogs] = useState<DogRecord[]>([]);
 
@@ -32,11 +35,23 @@ export function useAdoptionFlow(allDogs: DogRecord[]) {
     adoptionStatus: getResolvedAdoptionStatus(dog, pendingIdsSet, adoptedIdsSet),
   }));
   const pendingDogs = resolvedDogs.filter((dog) => pendingIdsSet.has(dog.id));
+  const adoptedDogs = resolvedDogs.filter((dog) => adoptedIdsSet.has(dog.id));
+  const pendingAdoptionCount = pendingDogs.length;
+  const adoptedDogCount = adoptedDogs.length;
+  const remainingAdoptionSlots = Math.max(
+    0,
+    MAX_ADOPTION_PER_SESSION - adoptedDogCount - pendingAdoptionCount,
+  );
+  const hasReachedAdoptionLimit = remainingAdoptionSlots === 0;
 
   function addDogToPendingAdoption(dogId: string) {
     const targetDog = resolvedDogs.find((dog) => dog.id === dogId);
 
-    if (!targetDog || targetDog.adoptionStatus !== "available") {
+    if (
+      !targetDog ||
+      targetDog.adoptionStatus !== "available" ||
+      remainingAdoptionSlots === 0
+    ) {
       return;
     }
 
@@ -76,6 +91,18 @@ export function useAdoptionFlow(allDogs: DogRecord[]) {
     setIsSuccessDialogOpen(true);
   }
 
+  function openAdoptedDrawer() {
+    if (adoptedDogCount === 0) {
+      return;
+    }
+
+    setIsAdoptedDrawerOpen(true);
+  }
+
+  function closeAdoptedDrawer() {
+    setIsAdoptedDrawerOpen(false);
+  }
+
   function closeSuccessDialog() {
     setIsSuccessDialogOpen(false);
   }
@@ -83,14 +110,21 @@ export function useAdoptionFlow(allDogs: DogRecord[]) {
   return {
     resolvedDogs,
     pendingDogs,
-    pendingAdoptionCount: pendingDogs.length,
+    adoptedDogs,
+    pendingAdoptionCount,
+    adoptedDogCount,
+    remainingAdoptionSlots,
+    hasReachedAdoptionLimit,
     isCheckoutExpanded,
+    isAdoptedDrawerOpen,
     isSuccessDialogOpen,
     lastConfirmedDogs,
     addDogToPendingAdoption,
     removeDogFromPendingAdoption,
     confirmPendingAdoptions,
     setIsCheckoutExpanded,
+    openAdoptedDrawer,
+    closeAdoptedDrawer,
     closeSuccessDialog,
   };
 }

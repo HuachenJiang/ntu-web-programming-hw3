@@ -6,7 +6,10 @@ import {
   type ReactNode,
   type SetStateAction,
 } from "react";
-import { useAdoptionFlow } from "../hooks/useAdoptionFlow";
+import {
+  MAX_ADOPTION_PER_SESSION,
+  useAdoptionFlow,
+} from "../hooks/useAdoptionFlow";
 import { useDogCatalogData } from "../hooks/useDogCatalogData";
 import { BREEDS, type BreedKey, type DogRecord } from "../types/dog";
 import type { BreedMeta } from "../data/breedMeta";
@@ -27,8 +30,14 @@ interface DogCatalogContextValue {
   };
   adoption: {
     pendingDogs: DogRecord[];
+    adoptedDogs: DogRecord[];
     pendingAdoptionCount: number;
+    adoptedDogCount: number;
+    remainingAdoptionSlots: number;
+    hasReachedAdoptionLimit: boolean;
+    maxAdoptionPerSession: number;
     isCheckoutExpanded: boolean;
+    isAdoptedDrawerOpen: boolean;
     isSuccessDialogOpen: boolean;
     lastConfirmedDogs: DogRecord[];
   };
@@ -37,6 +46,8 @@ interface DogCatalogContextValue {
     removeDogFromPendingAdoption: (dogId: string) => void;
     confirmPendingAdoptions: () => void;
     setIsCheckoutExpanded: Dispatch<SetStateAction<boolean>>;
+    openAdoptedDrawer: () => void;
+    closeAdoptedDrawer: () => void;
     closeSuccessDialog: () => void;
   };
 }
@@ -68,8 +79,14 @@ export function DogCatalogProvider({ children }: { children: ReactNode }) {
         },
         adoption: {
           pendingDogs: adoptionFlow.pendingDogs,
+          adoptedDogs: adoptionFlow.adoptedDogs,
           pendingAdoptionCount: adoptionFlow.pendingAdoptionCount,
+          adoptedDogCount: adoptionFlow.adoptedDogCount,
+          remainingAdoptionSlots: adoptionFlow.remainingAdoptionSlots,
+          hasReachedAdoptionLimit: adoptionFlow.hasReachedAdoptionLimit,
+          maxAdoptionPerSession: MAX_ADOPTION_PER_SESSION,
           isCheckoutExpanded: adoptionFlow.isCheckoutExpanded,
+          isAdoptedDrawerOpen: adoptionFlow.isAdoptedDrawerOpen,
           isSuccessDialogOpen: adoptionFlow.isSuccessDialogOpen,
           lastConfirmedDogs: adoptionFlow.lastConfirmedDogs,
         },
@@ -78,6 +95,8 @@ export function DogCatalogProvider({ children }: { children: ReactNode }) {
           removeDogFromPendingAdoption: adoptionFlow.removeDogFromPendingAdoption,
           confirmPendingAdoptions: adoptionFlow.confirmPendingAdoptions,
           setIsCheckoutExpanded: adoptionFlow.setIsCheckoutExpanded,
+          openAdoptedDrawer: adoptionFlow.openAdoptedDrawer,
+          closeAdoptedDrawer: adoptionFlow.closeAdoptedDrawer,
           closeSuccessDialog: adoptionFlow.closeSuccessDialog,
         },
       }}

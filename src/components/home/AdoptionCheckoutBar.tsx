@@ -1,5 +1,6 @@
 import { alpha, Box, Container, Divider, Paper, Stack } from "@mui/material";
 import { useDogCatalog } from "../../context/DogCatalogContext";
+import { AdoptionCheckoutAdoptedSummary } from "./AdoptionCheckoutAdoptedSummary";
 import { AdoptionCheckoutActions } from "./AdoptionCheckoutActions";
 import { AdoptionCheckoutList } from "./AdoptionCheckoutList";
 import { AdoptionCheckoutSummary } from "./AdoptionCheckoutSummary";
@@ -7,7 +8,16 @@ import { AdoptionCheckoutSummary } from "./AdoptionCheckoutSummary";
 export function AdoptionCheckoutBar() {
   const {
     catalog: { currentMeta },
-    adoption: { isCheckoutExpanded, pendingAdoptionCount, pendingDogs },
+    adoption: {
+      adoptedDogCount,
+      adoptedDogs,
+      hasReachedAdoptionLimit,
+      isCheckoutExpanded,
+      maxAdoptionPerSession,
+      pendingAdoptionCount,
+      pendingDogs,
+      remainingAdoptionSlots,
+    },
     actions: {
       confirmPendingAdoptions,
       removeDogFromPendingAdoption,
@@ -48,9 +58,13 @@ export function AdoptionCheckoutBar() {
           <Stack spacing={isCheckoutExpanded ? 2.25 : 0}>
             <AdoptionCheckoutSummary
               accent={accent}
+              adoptedDogCount={adoptedDogCount}
               hasPendingDogs={hasPendingDogs}
+              hasReachedAdoptionLimit={hasReachedAdoptionLimit}
               pendingAdoptionCount={pendingAdoptionCount}
               isCheckoutExpanded={isCheckoutExpanded}
+              maxAdoptionPerSession={maxAdoptionPerSession}
+              remainingAdoptionSlots={remainingAdoptionSlots}
               onToggleExpanded={() => setIsCheckoutExpanded((prev) => !prev)}
             />
 
@@ -64,9 +78,18 @@ export function AdoptionCheckoutBar() {
                     onRemoveDog={removeDogFromPendingAdoption}
                   />
 
+                  <AdoptionCheckoutAdoptedSummary
+                    accent={accent}
+                    adoptedDogs={adoptedDogs}
+                    remainingAdoptionSlots={remainingAdoptionSlots}
+                  />
+
                   <AdoptionCheckoutActions
                     accent={accent}
+                    adoptedDogCount={adoptedDogCount}
                     hasPendingDogs={hasPendingDogs}
+                    hasReachedAdoptionLimit={hasReachedAdoptionLimit}
+                    remainingAdoptionSlots={remainingAdoptionSlots}
                     onConfirm={confirmPendingAdoptions}
                   />
                 </Stack>

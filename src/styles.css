@@ -153,7 +153,8 @@ body::before {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  align-items: end;
+  align-items: flex-end;
+  flex-wrap: wrap;
 }
 
 .dog-grid {
@@ -215,6 +216,7 @@ body::before {
   .catalog-header {
     display: grid;
     align-items: start;
+    gap: 14px;
   }
 
   .dog-grid {
