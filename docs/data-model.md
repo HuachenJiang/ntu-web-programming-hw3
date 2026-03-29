@@ -48,7 +48,7 @@
 | `neuteredStatus` | `"已完成绝育" \| "绝育状态待更新"` | 绝育展示文案，在生成资料时就固定 |
 | `city` | `string` | 当前所在城市 |
 | `description` | `string` | 简短介绍 |
-| `adoptionStatus` | `"available"` | 当前阶段固定值 |
+| `adoptionStatus` | `"available" \| "locked" \| "adopted"` | 当前领养状态；`dogs.json` 初始值仍为 `available`，互动后由前端 session 覆写 |
 
 ## 4. 允许值来源
 
@@ -68,6 +68,7 @@
 - `gender`、`vaccinationStatus`、`neuteredStatus` 固定为中文展示文案，组件不再重复判断
 - 展示型文本字段统一使用简体中文
 - 当前城市资料来自固定城市列表，不做用户输入
+- `locked` 与 `adopted` 的最终展示文案由 UI 组件统一决定，不直接写入资料档中的中文文案字段
 
 ## 5. 当前资料规模
 
@@ -101,7 +102,20 @@
 
 ## 7. 当前阶段限制
 
-当前 `adoptionStatus` 固定为 `available`，不扩充为复杂状态机。若未来要加入更多状态，例如：
+当前 `dogs.json` / `dogs.csv` 中的 `adoptionStatus` 初始值仍为 `available`，但首页允许在前端 session 中把状态覆写为：
+
+- `available`
+- `locked`
+- `adopted`
+
+状态规则：
+
+- 加入待认养区后，该狗在当前 session 内视为 `locked`
+- 从待认养区单只放弃后，若尚未确认领养，则回到 `available`
+- 确认领养后，该狗在当前 session 内视为 `adopted`
+- 前端互动状态不反写 `dogs.json` / `dogs.csv`
+
+若未来要加入更多状态，例如：
 
 - 已送养
 - 待审核

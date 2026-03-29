@@ -106,7 +106,7 @@
 - `src/App.tsx`
   - 挂载 theme、`CssBaseline`、`DogCatalogProvider`
 - `src/context/`
-  - 负责页面共享浏览状态
+  - 负责页面共享浏览状态与前端 mock 的领养互动状态
 - `src/hooks/`
   - 负责读取 `dogs.json` 与派生统计资料
 - `src/components/home/`

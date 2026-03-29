@@ -12,8 +12,8 @@ export const BREEDS = [
 
 export type BreedKey = (typeof BREEDS)[number];
 
-// 当前阶段只允许提供可领养中的占位状态，后续业务扩充时再放宽枚举。
-export type AdoptionStatus = "available";
+// 资料档中的初始值仍会是 `available`，其余状态由前端 session 在互动时覆写。
+export type AdoptionStatus = "available" | "locked" | "adopted";
 
 export type DogGender = "男生" | "女生";
 export type VaccinationStatus = "已完成疫苗纪录" | "待补疫苗纪录";

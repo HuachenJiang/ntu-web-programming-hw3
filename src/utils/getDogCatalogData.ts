@@ -18,6 +18,7 @@ export function getDogCatalogData(selectedBreed: BreedKey) {
       : (dogs.reduce((sum, dog) => sum + dog.ageYears, 0) / totalDogs).toFixed(1);
 
   return {
+    allDogs: dogs,
     totalDogs,
     currentDogs,
     currentMeta,

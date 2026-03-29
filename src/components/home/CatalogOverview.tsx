@@ -2,7 +2,7 @@ import { alpha, Avatar, Box, Paper, Stack, Typography } from "@mui/material";
 import { useDogCatalog } from "../../context/DogCatalogContext";
 
 export function CatalogOverview() {
-  const { currentDogs, currentMeta, selectedBreed } = useDogCatalog();
+  const { currentDogs, currentMeta, pendingAdoptionCount, selectedBreed } = useDogCatalog();
 
   return (
     <Box
@@ -62,6 +62,9 @@ export function CatalogOverview() {
             <Typography className="insight-label">当前显示</Typography>
             <Typography sx={{ fontSize: "1.05rem", fontWeight: 700 }}>
               {currentDogs.length} 张狗狗卡片
+            </Typography>
+            <Typography sx={{ mt: 0.75, fontSize: "0.92rem", color: "text.secondary" }}>
+              待认养区目前有 {pendingAdoptionCount} 只狗狗
             </Typography>
           </Box>
         </Stack>

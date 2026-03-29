@@ -6,10 +6,12 @@ export function DogGrid() {
   const { currentDogs } = useDogCatalog();
 
   return (
-    <Box className="dog-grid">
-      {currentDogs.map((dog) => (
-        <DogCard key={dog.id} dog={dog} />
-      ))}
+    <Box className="dog-grid-shell">
+      <Box className="dog-grid">
+        {currentDogs.map((dog) => (
+          <DogCard key={dog.id} dog={dog} />
+        ))}
+      </Box>
     </Box>
   );
 }
